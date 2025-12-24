@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A05星願指引 - 組員介紹</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg,
+          #1a0b2e 0%,
+          #2d1b4e 50%,
+          #1a0b2e 100%);
+      color: #e0d4f7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    header {
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7, #9f7aea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(183, 148, 246, 0.5);
+      margin-bottom: 0.5rem;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.3);
+      }
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: #c4b5fd;
+      letter-spacing: 0.2rem;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(26, 11, 46, 0.65);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08rem;
+      color: #e0d4f7;
+      text-shadow: 0 0 18px rgba(183, 148, 246, 0.4);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+    }
+
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+      color: #c4b5fd;
+      padding: 0.2rem 0;
+      transition: color 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      transition: width 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #e0d4f7;
+      filter: brightness(1.15);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .main-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 5rem;
+      color: #e0d4f7;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* 扇形卡片容器 */
+    .fan-container {
+      position: relative;
+      height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 2000px;
+      margin-bottom: 4rem;
+    }
+
+    .card-wrapper {
+      position: absolute;
+      width: 340px;
+      height: 520px;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    /* 扇形排列 - 5張卡片 */
+    .card-wrapper:nth-child(1) {
+      transform: translateX(-450px) translateY(80px) rotate(-25deg);
+      z-index: 1;
+    }
+
+    .card-wrapper:nth-child(2) {
+      transform: translateX(-230px) translateY(20px) rotate(-12deg);
+      z-index: 2;
+    }
+
+    .card-wrapper:nth-child(3) {
+      transform: translateX(0px) translateY(0px) rotate(0deg);
+      z-index: 3;
+    }
+
+    .card-wrapper:nth-child(4) {
+      transform: translateX(230px) translateY(20px) rotate(12deg);
+      z-index: 2;
+    }
+
+    .card-wrapper:nth-child(5) {
+      transform: translateX(450px) translateY(80px) rotate(25deg);
+      z-index: 1;
+    }
+
+    /* 懸停效果 - 卡片凸出 */
+    .card-wrapper:hover {
+      transform: translateY(-40px) scale(1.15) rotate(0deg) !important;
+      z-index: 100 !important;
+      filter: brightness(1.1);
+    }
+
+    .card-wrapper:hover .team-card {
+      box-shadow: 0 25px 60px rgba(124, 58, 237, 0.6);
+    }
+
+    /* 卡片本體 */
+    .team-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      border-radius: 20px;
+    }
+
+    .card-wrapper:hover .team-card {
+      transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      background: rgba(124, 58, 237, 0.15);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(167, 139, 250, 0.3);
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+      overflow: hidden;
+    }
+
+    .card-front {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg,
+          rgba(124, 58, 237, 0.2) 0%,
+          rgba(167, 139, 250, 0.1) 100%);
+    }
+
+    .card-front img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(167, 139, 250, 0.5);
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .card-wrapper:hover .card-front img {
+      transform: scale(1.05);
+    }
+
+    .card-front h3 {
+      font-size: 1.8rem;
+      color: #e0d4f7;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 2px 10px rgba(183, 148, 246, 0.5);
+    }
+
+    .card-front .role {
+      font-size: 1rem;
+      color: #c4b5fd;
+      padding: 0.6rem 1.5rem;
+      background: rgba(124, 58, 237, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      background: linear-gradient(135deg,
+          rgba(45, 27, 78, 0.95) 0%,
+          rgba(26, 11, 46, 0.95) 100%);
+    }
+
+    .card-back h3 {
+      font-size: 1.5rem;
+      color: #e0d4f7;
+      margin-bottom: 1rem;
+      text-align: center;
+      flex-shrink: 0;
+      text-shadow: 0 2px 10px rgba(183, 148, 246, 0.5);
+    }
+
+    .card-content-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .card-content-wrapper::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .card-content-wrapper::-webkit-scrollbar-track {
+      background: rgba(124, 58, 237, 0.1);
+      border-radius: 10px;
+    }
+
+    .card-content-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(167, 139, 250, 0.5);
+      border-radius: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .card-content-wrapper::-webkit-scrollbar-thumb:hover {
+      background: rgba(167, 139, 250, 0.7);
+    }
+
+    .card-back p {
+      color: #c4b5fd;
+      line-height: 1.8;
+      font-size: 0.95rem;
+      text-align: justify;
+      margin: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(167, 139, 250, 0.3);
+      color: #c4b5fd;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 1400px) {
+      .fan-container {
+        height: 650px;
+      }
+
+      .card-wrapper {
+        width: 300px;
+        height: 480px;
+      }
+
+      .card-wrapper:nth-child(1) {
+        transform: translateX(-380px) translateY(70px) rotate(-22deg);
+      }
+
+      .card-wrapper:nth-child(2) {
+        transform: translateX(-195px) translateY(18px) rotate(-11deg);
+      }
+
+      .card-wrapper:nth-child(4) {
+        transform: translateX(195px) translateY(18px) rotate(11deg);
+      }
+
+      .card-wrapper:nth-child(5) {
+        transform: translateX(380px) translateY(70px) rotate(22deg);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .fan-container {
+        height: 1200px;
+        flex-direction: column;
+      }
+
+      .card-wrapper {
+        position: relative !important;
+        width: 340px;
+        height: 500px;
+        margin: 1rem 0;
+        transform: none !important;
+      }
+
+      .card-wrapper:hover {
+        transform: translateY(-20px) scale(1.05) !important;
+      }
+
+      .logo {
+        font-size: 2rem;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        margin-bottom: 3rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-wrapper {
+        width: 100%;
+        max-width: 320px;
+        height: 480px;
+      }
+    }
+
+    /* 提示文字 */
+    .hint-text {
+      text-align: center;
+      color: #a78bfa;
+      font-size: 0.95rem;
+      margin-top: -2rem;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars" id="stars"></div>
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">Starwish</a>
+      <div class="nav-links">
+        <a class="nav-link" href="intro.html">專題簡介</a>
+        <a class="nav-link" href="team.html">組員介紹</a>
+        <a class="nav-link" href="demo.html">系統展示</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <h1 class="logo">✨ 星願指引 ✨</h1>
+    <p class="tagline">不只是運勢,更是你的人際導航!</p>
+  </header>
+
+  <main class="main-content">
+
+    <div class="fan-container">
+      <div class="card-wrapper">
+        <div class="team-card">
+          <div class="card-front">
+            <img src="img/11144108.jpg" alt="謝皓丞" onerror="this.src='https://via.placeholder.com/180'">
+            <h3>謝皓丞</h3>
+            <span class="role">資管四甲-11144108</span>
+          </div>
+          <div class="card-back">
+            <h3>專題心得</h3>
+            <div class="card-content-wrapper">
+              <p>
+                在這次的專題前,並未有過自己決定方向且自主開發的經驗,從一開始與組員討論專題題目,以及與老師的開會討論下,讓我們選擇星座占卜為主題的方式去討論,確認題目後我們也新增了「利害關係人」及「線上塔羅解籤」作為我們的核心,其中我認為我們這項專案中遇到困難的部分就是製作API串連以及AI解答的部分。在這次專題中我與我的組員們都非常認真積極的想讓星願指引這個APP能夠更好更能吸引人,最終也在團隊的努力下成功的完成這項專案,也再次謝謝我的組員們的努力,讓我知道一個團隊的力量是非常強大的
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrapper">
+        <div class="team-card">
+          <div class="card-front">
+            <img src="img/11144113.jpg" alt="康祈誠" onerror="this.src='https://via.placeholder.com/180'">
+            <h3>康祐華</h3>
+            <span class="role">資管四甲-11144113</span>
+          </div>
+          <div class="card-back">
+            <h3>專題心得</h3>
+            <div class="card-content-wrapper">
+              <p>
+                在本次專題初期,團隊透過多次討論逐步釐清主題方向,從不同構想中反覆比較系統可行性與實際應用價值,最終決定以結合占卜體驗與 AI
+                技術作為核心發展方向。在前端頁面設計與操作流程規劃階段,團隊成員彼此交流想法,針對畫面配置與使用流程提出建議,使系統在操作上更直覺且一致。進入實作階段後,專題涉及前後端整合、資料庫建置、API 串接與 AI
+                功能導入,過程中遇到不少技術問題與整合困難,團隊透過討論、分工協助與反覆測試,共同找出解決方式。這次專題讓我深刻體會到團隊合作的重要性,良好的溝通與互相支持不僅提升問題解決效率,也讓整個開發過程更加順利,同時加深我對系統開發流程與
+                AI 實際應用的理解。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrapper">
+        <div class="team-card">
+          <div class="card-front">
+            <img src="img/11144109.jpg" alt="馬翊瑄" onerror="this.src='https://via.placeholder.com/180'">
+            <h3>馬翊瑄</h3>
+            <span class="role">資管四甲-11144109</span>
+          </div>
+          <div class="card-back">
+            <h3>專題心得</h3>
+            <div class="card-content-wrapper">
+              <p>
+                畢業專題終於圓滿落幕了,
+                回顧這一路,從一開始尋找指導教授、與組員反覆討論專題主題,
+                到構思整個系統的架構、雛型,再到後續的程式開發與測試,每一個階段都充滿挑戰,
+                也讓我學習到如何進行有效的溝通與妥善安排專題進度,
+                這不僅僅是一份個人的報告,而是所有組員共同投入、用心完成的專案。
+                大家都抱持著「想把專題做到最好」的心態,彼此支持、互相協助,才能一步步克服困難。
+                謝謝組員們的努力與付出,讓我們最終在畢業專題競賽中獲得獎項,也為這段大學生涯的重要里程碑畫下完美的句點!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrapper">
+        <div class="team-card">
+          <div class="card-front">
+            <img src="img/11144112.jpg" alt="許齡尹" onerror="this.src='https://via.placeholder.com/180'">
+            <h3>許齡尹</h3>
+            <span class="role">資管四甲-11144112</span>
+          </div>
+          <div class="card-back">
+            <h3>專題心得</h3>
+            <div class="card-content-wrapper">
+              <p>
+                在製作畢業專題的過程中,從系統發想到最後實作出來都是跟組員一步一步探索出來的,
+                在過程中我認為最困難的地方是該如何將我們的系統變成一個人們生活中真正可以每天打開的APP,而不止是因為迷信的時候才會打開這個APP。過程中我們也經歷了許多磨合和試錯,最終完成了這個系統並且獲得了不錯的成績,感謝指導老師以及組員們這一年來的努力。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrapper">
+        <div class="team-card">
+          <div class="card-front">
+            <img src="img/11144106.jpg" alt="蔡貽碩" onerror="this.src='https://via.placeholder.com/180'">
+            <h3>蔡貽琳</h3>
+            <span class="role">資管四甲-11144106</span>
+          </div>
+          <div class="card-back">
+            <h3>專題心得</h3>
+            <div class="card-content-wrapper">
+              <p>
+                在製作「星願指引」這個專題前,過去我通常對於占卜歸類為迷信或娛樂,透過結合利害關係人、塔羅、運勢抽籤解籤與 AI
+                回應機制等,讓我在更了解這類主題的同時,也體會到專題製作並不只是單純設計系統或內容,更是展現團隊合作的重要性。過程中成員各自負責不同功能,若缺乏即時討論與分工協調,容易影響整體進度與品質。透過不斷修正想法與彼此配合,我學習到尊重不同意見與主動承擔責任的重要性。
+
+                這次專題讓我認知到,一個完整的作品不只來自個人能力,更來自團隊共同努力與互相支持。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 星願指引 | 畢業專題製作</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem">探索命運 · 指引未來</p>
+  </footer>
+
+  <script>
+    // 生成星星背景
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.width = Math.random() * 3 + 1 + "px";
+      star.style.height = star.style.width;
+      star.style.animationDelay = Math.random() * 3 + "s";
+      starsContainer.appendChild(star);
+    }
+
+    // 卡片互動效果增強
+    const cardWrappers = document.querySelectorAll('.card-wrapper');
+    cardWrappers.forEach((wrapper, index) => {
+      wrapper.addEventListener('mouseenter', function () {
+        // 其他卡片稍微縮小
+        cardWrappers.forEach((other, otherIndex) => {
+          if (otherIndex !== index) {
+            other.style.opacity = '0.6';
+            other.style.filter = 'blur(2px)';
+          }
+        });
+      });
+
+      wrapper.addEventListener('mouseleave', function () {
+        // 恢復所有卡片
+        cardWrappers.forEach((other) => {
+          other.style.opacity = '1';
+          other.style.filter = 'none';
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

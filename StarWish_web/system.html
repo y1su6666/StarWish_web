@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A05星願指引</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg,
+          #1a0b2e 0%,
+          #2d1b4e 50%,
+          #1a0b2e 100%);
+      color: #e0d4f7;
+      overflow-x: hidden;
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    header {
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7, #9f7aea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(183, 148, 246, 0.5);
+      margin-bottom: 0.5rem;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.3);
+      }
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: #c4b5fd;
+      letter-spacing: 0.2rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #e0d4f7;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+      color: #c4b5fd;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 3rem;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+      cursor: pointer;
+      border: none;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
+    }
+
+    .features {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features h3 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      color: #e0d4f7;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: rgba(124, 58, 237, 0.1);
+      border: 2px solid rgba(167, 139, 250, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(167, 139, 250, 0.6);
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+    }
+
+    .feature-img {
+      width: 30%;
+      height: 30%;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h4 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #e0d4f7;
+    }
+
+    .feature-card p {
+      color: #c4b5fd;
+      line-height: 1.6;
+    }
+
+    .cards-display {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+
+    .tarot-card {
+      width: 120px;
+      height: 200px;
+      background: linear-gradient(135deg, #4c1d95, #6d28d9);
+      border: 3px solid #a78bfa;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+    }
+
+    .tarot-card:hover {
+      transform: translateY(-15px) rotate(5deg);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(167, 139, 250, 0.3);
+      color: #c4b5fd;
+    }
+
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 2rem;
+      }
+
+      .hero h2 {
+        font-size: 1.8rem;
+      }
+
+      .cat_img {
+        width: 250px;
+      }
+    }
+
+    /* ===== Tarot Flip Card ===== */
+
+    .tarot-grid {
+      gap: 1.2rem;
+    }
+
+    .tarot-card {
+      perspective: 1000px;
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
+
+    .tarot-inner {
+      position: relative;
+      width: 120px;
+      height: 200px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s ease;
+    }
+
+    /* 預設翻面（顯示背面） */
+    .tarot-card.is-flipped .tarot-inner {
+      transform: rotateY(180deg);
+    }
+
+    .tarot-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+    }
+
+    .tarot-face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 背面本身先轉 180 */
+    .tarot-back {
+      transform: rotateY(180deg);
+    }
+
+    /* ===== Top Navigation (Hover Only) ===== */
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(26, 11, 46, 0.65);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08rem;
+      color: #e0d4f7;
+      text-shadow: 0 0 18px rgba(183, 148, 246, 0.4);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+    }
+
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+      color: #c4b5fd;
+      padding: 0.2rem 0;
+      transition: color 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      transition: width 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #e0d4f7;
+      filter: brightness(1.15);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 768px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    /* ===== Fix Tarot size on mobile (flip cards) ===== */
+
+    /* 讓卡片容器不要硬吃舊的 width/height */
+    .cards-display .tarot-card {
+      width: auto;
+      height: auto;
+    }
+
+    /* 用 tarot-inner 才是正確的大小來源 */
+    .cards-display .tarot-inner {
+      width: 120px;
+      height: 200px;
+    }
+
+    /* 手機：改 tarot-inner 尺寸（而不是 tarot-card） */
+    @media (max-width: 768px) {
+      .cards-display {
+        gap: 0.8rem;
+      }
+
+      .cards-display .tarot-inner {
+        width: 90px;
+        /* 你想更大可改 100/110 */
+        height: 150px;
+        /* 等比例 90:150 */
+      }
+    }
+
+    /* 移除 <a> 預設藍字與底線（只影響 feature 卡片） */
+    .feature-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    /* 確保裡面的字不會被瀏覽器強制上色 */
+    .feature-link h4,
+    .feature-link p {
+      color: inherit;
+    }
+
+    /* ===== Smoke Bomb Reveal (on load) ===== */
+
+    .cat-reveal {
+      position: relative;
+      display: inline-block;
+      isolation: isolate;
+    }
+
+    /* 貓：進場只跑一次，最後停在顯示狀態 */
+    .cat-reveal .cat_img {
+      display: block;
+      position: relative;
+      z-index: 1;
+
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(6px);
+
+      animation: catIn 500ms ease forwards;
+      /* ✅ 用 forwards 固定最後狀態 */
+      animation-delay: 0.5s;
+
+      will-change: transform;
+    }
+
+    /* 煙霧彈：一開始蓋住貓，0.5s 後散掉消失 */
+    .cat-reveal .smoke-bomb {
+      position: absolute;
+      left: 50%;
+      top: 55%;
+      width: 260px;
+      height: 260px;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      pointer-events: none;
+
+      background: radial-gradient(circle at 35% 55%,
+          rgba(224, 212, 247, 0.75) 0%,
+          rgba(167, 139, 250, 0.35) 40%,
+          rgba(124, 58, 237, 0) 70%),
+        radial-gradient(circle at 60% 45%,
+          rgba(224, 212, 247, 0.65) 0%,
+          rgba(167, 139, 250, 0.3) 42%,
+          rgba(124, 58, 237, 0) 72%),
+        radial-gradient(circle at 50% 70%,
+          rgba(224, 212, 247, 0.55) 0%,
+          rgba(167, 139, 250, 0.25) 45%,
+          rgba(124, 58, 237, 0) 75%);
+
+      filter: blur(12px);
+      opacity: 1;
+
+      animation: smokeOut 700ms ease forwards;
+      animation-delay: 0.1s;
+    }
+
+    /* ===== Cat hover wobble ===== */
+    /* ✅ 重點：不要改掉 catIn 的 animation，改用「只動 transform」的方式 */
+    .cat-reveal:hover .cat_img {
+      animation: catIn 500ms ease forwards,
+        catWobble 0.6s ease-in-out infinite;
+      transform-origin: 50% 90%;
+    }
+
+    /* 讓 catIn 只負責進場顯示 */
+    @keyframes catIn {
+      0% {
+        opacity: 0;
+        filter: blur(4px);
+        transform: translateY(6px);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
+    }
+
+    /* hover 晃動 */
+    @keyframes catWobble {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      20% {
+        transform: translateY(0) rotate(2deg);
+      }
+
+      40% {
+        transform: translateY(0) rotate(-2deg);
+      }
+
+      60% {
+        transform: translateY(0) rotate(1.5deg);
+      }
+
+      80% {
+        transform: translateY(0) rotate(-1.5deg);
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    @keyframes smokeOut {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      40% {
+        opacity: 0.95;
+        transform: translate(-50%, -55%) scale(1.12);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -90%) scale(1.55);
+      }
+    }
+
+    /* 手機：煙霧也跟著縮小，位置維持合理 */
+    @media (max-width: 768px) {
+      .cat-reveal .smoke-bomb {
+        width: 350px;
+        height: 350px;
+        filter: blur(8px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars" id="stars"></div>
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">Starwish</a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="intro.html">專題簡介</a>
+        <a class="nav-link" href="team.html">組員介紹</a>
+        <a class="nav-link" href="demo.html">系統展示</a>
+      </div>
+    </div>
+  </nav>
+  <header>
+    <h1 class="logo">✨ 星願指引 ✨</h1>
+    <p class="tagline">不只是運勢，更是你的人際導航！</p>
+  </header>
+
+  <!--<section class="hero">
+    <div class="cat-reveal">
+      <div class="cat-sprite">
+        <img src="img/cat.png" class="cat_img" alt="cat" />
+      </div>
+
+      <div class="smoke-bomb" aria-hidden="true"></div>
+    </div>
+
+    <h2>探索你的未來之路</h2>
+      <p>
+        結合千年智慧與現代科技，透過AI為您提供專業的塔羅占卜<br />無論是愛情、事業或人生方向，讓星願指引為您指引方向
+      </p> -->
+  <!-- <div class="cards-display tarot-grid">
+        <div class="tarot-card is-flipped">
+          <div class="tarot-inner">
+            <div class="tarot-face tarot-front">
+              <img src="img/lovers.png" />
+            </div>
+            <div class="tarot-face tarot-back">
+              <img src="img/tarot_front.png" />
+            </div>
+          </div>
+        </div>
+
+        <div class="tarot-card is-flipped">
+          <div class="tarot-inner">
+            <div class="tarot-face tarot-front">
+              <img src="img/strength.png" />
+            </div>
+            <div class="tarot-face tarot-back">
+              <img src="img/tarot_front.png" />
+            </div>
+          </div>
+        </div>
+
+        <div class="tarot-card is-flipped">
+          <div class="tarot-inner">
+            <div class="tarot-face tarot-front">
+              <img src="img/magician.png" />
+            </div>
+            <div class="tarot-face tarot-back">
+              <img src="img/tarot_front.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>-->
+
+  <section class="features">
+    <h3>六大核心功能</h3>
+    <div class="feature-grid">
+      <a href="system01.html" class="feature-link">
+        <div class="feature-card clickable">
+          <div class="feature-icon">
+            <img class="feature-img" src="img/tarot_card.png" alt="塔羅牌" />
+          </div>
+          <h4>塔羅AI占卜</h4>
+          <p>趣味抽牌、解讀、洞察，AI 為你解析潛藏在當下的訊息</p>
+        </div>
+      </a>
+      <a href="system02.html" class="feature-link">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img class="feature-img" src="img/chance.png" />
+          </div>
+          <h4>籤詩AI解籤</h4>
+          <p>結合傳統籤詩與 AI 解讀，讓古老智慧更貼近你的生活</p>
+        </div>
+      </a>
+      <a href="system03.html" class="feature-link">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img class="feature-img" src="img/stakeholder.png" />
+          </div>
+          <h4>利害關係人</h4>
+          <p>分析你與重要他人的互動關係，給你每天最適合的相處建議</p>
+        </div>
+      </a>
+
+      <a href="system04.html" class="feature-link">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img class="feature-img" src="img/character.png" />
+          </div>
+          <h4>個人空間</h4>
+          <p>AI根據每日的幸運小物，生成專屬於您的每日幸運造型</p>
+        </div>
+      </a>
+      <a href="system05.html" class="feature-link">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img class="feature-img" src="img/question.png" />
+          </div>
+          <h4>每日運勢</h4>
+          <p>整合星座運勢與農民曆宜忌，尊重多元信仰，給你更完整的每日指引</p>
+        </div>
+      </a>
+      <a href="system06.html" class="feature-link">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img class="feature-img" src="img/social.png" />
+          </div>
+          <h4>社群討論</h4>
+          <p>分享你的故事與體驗，在交流中找到共鳴與支持</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 星願指引 | 畢業專題製作</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem">探索命運 · 指引未來</p>
+  </footer>
+
+  <script>
+    // 生成星星背景
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.width = Math.random() * 3 + 1 + "px";
+      star.style.height = star.style.width;
+      star.style.animationDelay = Math.random() * 3 + "s";
+      starsContainer.appendChild(star);
+    }
+    // 塔羅牌翻面效果
+    document.querySelectorAll(".tarot-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("is-flipped");
+      });
+    });
+  </script>
+</body>
+
+</html>

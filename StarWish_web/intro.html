@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A05星願指引 - 專題簡介</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg,
+          #1a0b2e 0%,
+          #2d1b4e 50%,
+          #1a0b2e 100%);
+      color: #e0d4f7;
+      overflow-x: hidden;
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    header {
+      padding-top: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      /*margin-bottom: 3rem;*/
+    }
+
+    .logo {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7, #9f7aea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(183, 148, 246, 0.5);
+      margin-bottom: 0.5rem;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.3);
+      }
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: #c4b5fd;
+      letter-spacing: 0.2rem;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(26, 11, 46, 0.65);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08rem;
+      color: #e0d4f7;
+      text-shadow: 0 0 18px rgba(183, 148, 246, 0.4);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+    }
+
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+      color: #c4b5fd;
+      padding: 0.2rem 0;
+      transition: color 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      transition: width 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #e0d4f7;
+      filter: brightness(1.15);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* 視差滾動容器 */
+    .scroll-container {
+      position: relative;
+      padding-top: 0.5rem;
+    }
+
+    .scroll-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    /* 第一個區塊需要更多上方空間 */
+    /*.scroll-section:first-child {
+      padding-top: 1rem;
+    }*/
+
+    .glass-block {
+      max-width: 900px;
+      width: 90%;
+      background: rgba(124, 58, 237, 0.15);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(167, 139, 250, 0.3);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      margin: 4rem 0;
+    }
+
+    .glass-block.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .glass-block.sticky {
+      position: sticky;
+      top: 50%;
+      transform: translateY(-50%) scale(1);
+      opacity: 1;
+    }
+
+    .glass-block:hover {
+      transform: translateY(-8px) scale(1.02) !important;
+      border-color: rgba(167, 139, 250, 0.6);
+      box-shadow: 0 12px 40px rgba(124, 58, 237, 0.4);
+      background: rgba(124, 58, 237, 0.2);
+    }
+
+    .glass-block h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #e0d4f7;
+      text-align: center;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-block p {
+      color: #c4b5fd;
+      line-height: 2;
+      font-size: 1.1rem;
+      text-align: justify;
+    }
+
+    .glass-block ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    .glass-block li {
+      color: #c4b5fd;
+      line-height: 2;
+      font-size: 1.05rem;
+      padding-left: 1.5rem;
+      position: relative;
+      margin-bottom: 0.8rem;
+    }
+
+    .glass-block li::before {
+      content: "✨";
+      position: absolute;
+      left: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(167, 139, 250, 0.3);
+      color: #c4b5fd;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 2rem;
+      }
+
+      header {
+        margin-bottom: 1rem;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .scroll-container {
+        padding-top: 1rem;
+      }
+
+      .scroll-section {
+        padding: 1rem 0;
+      }
+
+      .scroll-section:first-child {
+        padding-top: 1rem;
+      }
+
+      .glass-block {
+        padding: 2rem;
+        width: 95%;
+        margin: 2.5rem 0;
+      }
+
+      .glass-block h2 {
+        font-size: 1.8rem;
+      }
+
+      .glass-block p,
+      .glass-block li {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars" id="stars"></div>
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">Starwish</a>
+      <div class="nav-links">
+        <a class="nav-link" href="intro.html">專題簡介</a>
+        <a class="nav-link" href="team.html">組員介紹</a>
+        <a class="nav-link" href="system.html">系統展示</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <h1 class="logo">✨ 星願指引 ✨</h1>
+    <p class="tagline">不只是運勢,更是你的人際導航!</p>
+  </header>
+
+  <div class="scroll-container">
+
+    <!-- 專題緣起 -->
+    <section class="scroll-section">
+      <div class="glass-block" data-section="1">
+        <h2>專題緣起</h2>
+        <p>
+          在日常生活中,人們常常會面臨各種難題,無論是人際關係、職場升遷、感情疑惑,或是生活中的小問題。許多人在這些時刻都希望能有人給予方向,一句建議、一段提醒,甚至是一種情緒上的支持。傳統的占卜、塔羅以及抽籤文化正是因應這樣的需求而存在,而它們之所以流行,是因為能提供象徵性的啟發與安定感。然而,實際生活中並不是每一次困惑都能即時找到占卜師或專業人士協助,因此我們為了讓「尋求指引」變得更即時、更普及、更貼近現代使用者的需求,而選擇製作此系統。
+          在此專題中,我們將功能與AI進行結合,利用AI的文本分析以及網路爬蟲功能給予使用者與其利害關係人個人化的相處建議,而由於使用者可以儲存多位利害關係人在系統中,系統也會從中計算出契合度,列出使用者的每日貴人。
+          我們也在系統中加入一項兼具實用性與趣味性的功能——AI 解籤與 AI 塔羅占卜,讓用戶在遇到一些選擇上的困難時可以透過此功能進行提問,AI會根據使用者的需求提供詳細說明並給予正向建議。
+          我們期望可以透過此專題幫助人們在日常與他人的相處中更加的游刃有餘,更希望能透過此專題讓人們的困惑都能得到及時的反饋,在平凡枯燥的生活增添許多樂趣。
+        </p>
+      </div>
+    </section>
+
+    <!-- 專題特色 -->
+    <section class="scroll-section">
+      <div class="glass-block" data-section="2">
+        <h2>專題特色</h2>
+        <ul>
+          <li>利害關係人:APP中可供使用者輸入自己的利害關係人,並推播利害關係人的每日運勢。</li>
+          <li>中西合併:將東西方的運勢整合在一起,無論使用者或是利害關係人的信仰是東方還是西方都能在APP中得到不同運勢的分析。</li>
+          <li>AI與運勢的結合:運用OpenAI幫使用者分析問題以及抽到的塔羅牌或籤詩內容,並給予解答,也有聊天室的功能讓使用者進行進階的提問。</li>
+          <li>個人化空間:根據每日幸運物來幫你生成對應的造型,並提供分享和儲存的功能,讓你更便利的攜帶幸運小物。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 專題貢獻 -->
+    <section class="scroll-section">
+      <div class="glass-block" data-section="3">
+        <h2>專題貢獻</h2>
+        <ul style="margin-top: 1rem;">
+          <li>結合本團隊創意與AI技術,協助使用者改善人際關係。</li>
+          <li>未來擴展至線上解牌直播、品牌 IP 化等多元變現路徑。</li>
+          <li>完善APP功能以利於與占卜命理老師、IP插畫家合作推出主題內容。</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>© 2025 星願指引 | 畢業專題製作</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem">探索命運 · 指引未來</p>
+  </footer>
+
+  <script>
+    // 生成星星背景
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.width = Math.random() * 3 + 1 + "px";
+      star.style.height = star.style.width;
+      star.style.animationDelay = Math.random() * 3 + "s";
+      starsContainer.appendChild(star);
+    }
+
+    // 滾動動畫效果
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // 觀察所有玻璃區塊
+    document.querySelectorAll('.glass-block').forEach(block => {
+      observer.observe(block);
+    });
+
+    // 進階滾動效果
+    let ticking = false;
+
+    function updateBlocks() {
+      const blocks = document.querySelectorAll('.glass-block');
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      blocks.forEach(block => {
+        const rect = block.getBoundingClientRect();
+        const blockTop = rect.top + scrollY;
+        const blockHeight = rect.height;
+
+        // 計算區塊在視窗中的位置
+        const scrollProgress = (scrollY + windowHeight / 2 - blockTop) / windowHeight;
+
+        // 在視窗中間時達到最佳狀態
+        if (scrollProgress > 0.2 && scrollProgress < 0.8) {
+          const scale = 1 + (0.5 - Math.abs(scrollProgress - 0.5)) * 0.1;
+          block.style.transform = `translateY(0) scale(${Math.min(scale, 1.05)})`;
+          block.style.opacity = '1';
+        }
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateBlocks);
+        ticking = true;
+      }
+    });
+
+    // 初始化
+    updateBlocks();
+  </script>
+</body>
+
+</html>

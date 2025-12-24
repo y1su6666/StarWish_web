@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>社群討論版｜星願指引</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg,
+          #1a0b2e 0%,
+          #2d1b4e 50%,
+          #1a0b2e 100%);
+      color: #e0d4f7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 星空背景（同 index） */
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* ===== Top Navigation (同 index) ===== */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(26, 11, 46, 0.65);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08rem;
+      color: #e0d4f7;
+      text-shadow: 0 0 18px rgba(183, 148, 246, 0.4);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+    }
+
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+      color: #c4b5fd;
+      padding: 0.2rem 0;
+      transition: color 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      transition: width 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #e0d4f7;
+      filter: brightness(1.15);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    /* ===== Page Header (沿用 index 的 logo 風格) ===== */
+    header {
+      padding: 2.5rem 1.5rem 1.2rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      font-size: 2.6rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7, #9f7aea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(183, 148, 246, 0.5);
+      margin-bottom: 0.5rem;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.25);
+      }
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: #c4b5fd;
+      letter-spacing: 0.12rem;
+    }
+
+    /* ===== Main Layout ===== */
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+    }
+
+    /* 玻璃卡片（同 feature-card 語言） */
+    .glass {
+      background: rgba(124, 58, 237, 0.1);
+      border: 2px solid rgba(167, 139, 250, 0.28);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .glass:hover {
+      border-color: rgba(167, 139, 250, 0.55);
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.25);
+    }
+
+    /* ===== 上方：圖片展示區（置中） ===== */
+    .profile-hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ✅【新增】多張圖片的置中 Grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 360px);
+      /* ⭐ 跟 max-width 同步 */
+      gap: 2rem;
+      /* ⭐ 中間空格 */
+      justify-content: center;
+      /* ⭐ 整排置中 */
+      width: 100%;
+    }
+
+    /* 你的卡片樣式：沿用 hero-image-card */
+    .hero-image-card {
+      padding: 1rem;
+      width: 100%;
+      max-width: 360px;
+      /* ⭐ 真正縮小卡片大小（可調 340~400） */
+      margin: 0 auto;
+      transform: none;
+      /* ⭐ 不用 scale */
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .hero-image-card:hover {
+      transform: translateY(-4px);
+      /* hover 只上浮，不放大 */
+      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.28);
+      border-color: rgba(167, 139, 250, 0.55);
+    }
+
+    .hero-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 9 / 16;
+      object-fit: contain;
+      background: rgba(26, 11, 46, 0.35);
+      border-radius: 16px;
+      display: block;
+    }
+
+    /* ===== 下方：說明區 ===== */
+    .section-title {
+      text-align: center;
+      font-size: 1.9rem;
+      margin: 3rem 0 1.6rem;
+      color: #e0d4f7;
+    }
+
+    .desc-grid {
+      display: flex;
+      grid-template-columns: 1fr 1fr;
+      justify-content: center;
+    }
+
+    .desc-card {
+      padding: 1.6rem;
+    }
+
+    .desc-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.7rem;
+      color: #e0d4f7;
+    }
+
+    .desc-card p,
+    .desc-card li {
+      color: #c4b5fd;
+      line-height: 1.8;
+    }
+
+    .desc-card ul {
+      margin-top: 0.7rem;
+      padding-left: 1.2rem;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(167, 139, 250, 0.3);
+      color: #c4b5fd;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== RWD ===== */
+    @media (max-width: 900px) {
+      .desc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .logo {
+        font-size: 2.1rem;
+      }
+
+      /* ✅ 平板以下：改成一排一張 */
+      .photo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+
+      /* 手機上縮小一點 */
+      .hero-image-card {
+        transform: scale(0.65);
+      }
+
+      .hero-image-card:hover {
+        transform: scale(0.65) translateY(-3px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars" id="stars"></div>
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">Starwish</a>
+      <div class="nav-links">
+        <a class="nav-link" href="intro.html">專題簡介</a>
+        <a class="nav-link" href="team.html">組員介紹</a>
+        <a class="nav-link" href="demo.html">系統展示</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <h1 class="logo">社群討論版</h1>
+    <p class="tagline">社群討論｜與大家一同分享</p>
+  </header>
+
+  <main class="container">
+    <!-- ✅ 只新增多張圖片：把原本單張改成 photo-grid 包多張 -->
+    <section class="profile-hero">
+      <div class="photo-grid">
+        <!-- 你要幾張就放幾張（改 src 即可） -->
+        <div class="hero-image-card glass">
+          <img class="hero-image" src="img/community.jpg" alt="個人空間主視覺 1" />
+        </div>
+
+        <div class="hero-image-card glass">
+          <img class="hero-image" src="img/community1.jpg" alt="個人空間主視覺 2" />
+        </div>
+      </div>
+    </section>
+
+    <h2 class="section-title">功能說明</h2>
+
+    <section class="desc-grid">
+      <div class="desc-card glass">
+        <h3>社群討論版</h3>
+        <p>
+          每位用戶都能夠在社群版與大家聊天分享故事，也有劃分主題標籤，讓用戶可以
+          依照自己想討論的主題做分享。
+        </p>
+        <ul>
+          <li>今日運勢：點取星座運勢主題開始與大家討論運勢</li>
+          <li>幸運小物：利用個人化的幸運小物去做討論</li>
+          <li>商城物品:分享在商城平台所購買的物品去做分享，或是自從買之後所發生的趣事分享</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 星願指引 | 畢業專題製作</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem">探索命運 · 指引未來</p>
+  </footer>
+
+  <script>
+    // 生成星星背景（同 index）
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.width = Math.random() * 3 + 1 + "px";
+      star.style.height = star.style.width;
+      star.style.animationDelay = Math.random() * 3 + "s";
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+
+</html>

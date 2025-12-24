@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>個人空間｜星願指引</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #1a0b2e 100%);
+      color: #e0d4f7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 星空背景（同 index） */
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* ===== Top Navigation (同 index) ===== */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(26, 11, 46, 0.65);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08rem;
+      color: #e0d4f7;
+      text-shadow: 0 0 18px rgba(183, 148, 246, 0.4);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+    }
+
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+      color: #c4b5fd;
+      padding: 0.2rem 0;
+      transition: color 0.2s ease, filter 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      transition: width 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #e0d4f7;
+      filter: brightness(1.15);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    /* ===== Page Header (沿用 index 的 logo 風格) ===== */
+    header {
+      padding: 2.5rem 1.5rem 1.2rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      font-size: 2.6rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #b794f6, #e0d4f7, #9f7aea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(183, 148, 246, 0.5);
+      margin-bottom: 0.5rem;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.25);
+      }
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: #c4b5fd;
+      letter-spacing: 0.12rem;
+    }
+
+    /* ===== Main Layout ===== */
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+    }
+
+    /* 玻璃卡片（同 feature-card 語言） */
+    .glass {
+      background: rgba(124, 58, 237, 0.1);
+      border: 2px solid rgba(167, 139, 250, 0.28);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      /* ✅ 不要 all，避免蓋掉 transform */
+    }
+
+    /* ✅ hover 只改邊框/陰影，不動 transform（避免跟 scale 打架） */
+    .glass:hover {
+      border-color: rgba(167, 139, 250, 0.55);
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.25);
+    }
+
+    /* ===== 上方：圖片展示區 ===== */
+    .profile-hero {
+      display: flex;
+      justify-content: center;
+      /* 水平置中 */
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ✅ 框 + 圖一起縮小 30%，hover 仍保持 scale(0.7) 不變 */
+    .hero-image-card {
+      padding: 1rem;
+      width: min(520px, 92vw);
+      /* ✅ 控制卡片實際寬度，縮放後仍置中 */
+      margin: 0 auto;
+      transform: scale(0.8);
+      transform-origin: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .hero-image-card:hover {
+      transform: scale(0.8) translateY(-4px);
+      /* ✅ 不變大，只微上浮 */
+      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.28);
+      border-color: rgba(167, 139, 250, 0.55);
+    }
+
+    .hero-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 9 / 16;
+      object-fit: contain;
+      background: rgba(26, 11, 46, 0.35);
+      border-radius: 16px;
+
+    }
+
+    /* ===== 下方：說明區 ===== */
+    .section-title {
+      text-align: center;
+      font-size: 1.9rem;
+      margin: 3rem 0 1.6rem;
+      color: #e0d4f7;
+    }
+
+    .desc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6rem;
+    }
+
+    .desc-card {
+      padding: 1.6rem;
+    }
+
+    .desc-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.7rem;
+      color: #e0d4f7;
+    }
+
+    .desc-card p,
+    .desc-card li {
+      color: #c4b5fd;
+      line-height: 1.8;
+      /* ✅ 你原本 1 太擠 */
+    }
+
+    .desc-card ul {
+      margin-top: 0.7rem;
+      padding-left: 1.2rem;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(167, 139, 250, 0.3);
+      color: #c4b5fd;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== RWD ===== */
+    @media (max-width: 900px) {
+      .profile-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .desc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .logo {
+        font-size: 2.1rem;
+      }
+    }
+
+    /* ✅ 你原本把 hero-image 設成 100px 會破壞直式照片比例，移除 */
+    @media (max-width: 500px) {
+      .profile-hero {
+        grid-template-columns: 1fr;
+      }
+
+      /* 手機上縮小一點也行（可依喜好調 0.65~0.75） */
+      .hero-image-card,
+      .gallery-item {
+        transform: scale(0.65);
+      }
+
+      .hero-image-card:hover {
+        transform: scale(0.65) translateY(-3px);
+      }
+
+      .gallery-item:hover {
+        transform: scale(0.65) translateY(-2px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars" id="stars"></div>
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">Starwish</a>
+      <div class="nav-links">
+        <a class="nav-link" href="intro.html">專題簡介</a>
+        <a class="nav-link" href="team.html">組員介紹</a>
+        <a class="nav-link" href="system.html">系統展示</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <h1 class="logo">個人空間</h1>
+    <p class="tagline">你的個人空間｜幸運小物 </p>
+  </header>
+
+  <main class="container">
+    <section class="profile-hero">
+      <div class="hero-image-card glass">
+        <img class="hero-image" src="img/myself.jpg" alt="個人空間主視覺" />
+      </div>
+
+    </section>
+
+    <h2 class="section-title">功能說明</h2>
+
+    <section class="desc-grid">
+      <div class="desc-card glass">
+        <h3>每日生成幸運人物</h3>
+        <p>
+          系統會根據你當日的星座運勢獲得幸運小物（顏色、元素、意涵），推薦當日的穿搭方向，
+          並產出一張「幸運造型圖」或風格卡片讓用戶帶在身邊。
+        </p>
+        <ul>
+          <li>依幸運色：今日的主色／點綴色搭配</li>
+          <li>依意涵：給予適當建議，例如:適合社交、讀書、面試、放鬆等情境</li>
+        </ul>
+      </div>
+
+      <div class="desc-card glass">
+        <h3>分享當日幸運人物</h3>
+        <p>
+          你可以把每天的小人物發佈到我們的討論版，並與其他用戶分享。
+        </p>
+        <ul>
+          <li>分享：向其他用戶分享各自的幸運小物</li>
+          <li>討論：向其他用戶討論幸運小物帶來的好運</li>
+        </ul>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer>
+    <p>© 2025 星願指引 | 畢業專題製作</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem">探索命運 · 指引未來</p>
+  </footer>
+
+  <script>
+    // 生成星星背景（同 index）
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.width = Math.random() * 3 + 1 + "px";
+      star.style.height = star.style.width;
+      star.style.animationDelay = Math.random() * 3 + "s";
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+
+</html>
